@@ -1,0 +1,59 @@
+{%extends 'base.html'%}
+
+
+
+{%block main_block%}
+
+<div class="container text-center p-5 ">
+    <div class="w-25  mx-auto ">
+        <h1>welcome user {{request.user}}</h1>
+        <form action="" >
+            <select name="category" class="form-select text-bg-secondary" onchange="this.form.submit()">
+                <option value="all">all</option>
+                <option value="food">food</option>
+                <option value="travel">travel</option>
+                <option value="health">health</option>
+                <option value="other">other</option>
+            </select>
+        </form>
+    </div>
+</div>
+
+
+
+
+<div class="container d-flex justify-content-between">
+
+    {%for e in expense%}
+
+    <div class="card text-bg-dark mb-3" style="max-width: 18rem;">
+        <div class="card-header d-flex justify-content-between">
+            <div>{{e.user}}</div>
+            <div></div>
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">{{e.title}}</h5>
+            <p class="card-text">$:{{e.amount}}</p>
+        </div>
+        <div class="card-footer text-body-white">
+            {{e.created_date}}
+
+            <a href="{%url 'expense-update' e.id %}">update</a>
+
+            <a href="{%url 'expense-delete' e.id %}">remove</a>
+
+           
+
+            
+
+
+        </div>
+    </div>
+    {%endfor%}
+
+
+</div>
+
+
+
+{%endblock%}
