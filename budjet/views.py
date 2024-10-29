@@ -9,11 +9,20 @@ from django.contrib import messages
 from budjet.models import Expense
 
 from django.contrib.auth.models import User
+
 from django.contrib.auth import authenticate,login,logout
 
+from django.db.models import Q
+
+from budjet.decorators import signin_required
+
+from django.utils.decorators import method_decorator
+
+from django.views.decorators.cache import never_cache
 
 
 
+@method_decorator([signin_required,never_cache],name="dispatch")
 class ExpenseCreateView(View):
     def get(self,request,*args,**kwargs):
 
@@ -45,24 +54,33 @@ class ExpenseCreateView(View):
 
 
         
-
+@method_decorator([signin_required,never_cache],name="dispatch")
 class ExpenseListView(View):
 
     def get(self,request,*args,**kwargs):
 
-        qs=Expense.objects.all()
 
-        if "category" in request.GET:
+        search_text=request.GET.get("search_text")
 
-            category_value=request.GET.get("category")
+        selected_category=request.GET.get("category","all")
 
-            qs=qs.filter(category=category_value)
+        if  selected_category =="all":
+            qs=Expense.objects.filter(user=request.user)
 
-        return render(request,"expense_list.html",{"expense":qs,})
+        else:
+            qs=Expense.objects.filter(category=selected_category,user=request.user)
+    
+
+        if search_text!=None:
+            qs=Expense.objects.filter(user=request.user)
+            qs=qs.filter(title__contains=search_text)
+
+
+        return render(request,"expense_list.html",{"expense":qs,"selected":selected_category})
     
 
         
-
+@method_decorator([signin_required,never_cache],name="dispatch")
 class ExpenseDetailView(View):
 
     def get(self,request,*args,**kwargs):
@@ -77,7 +95,7 @@ class ExpenseDetailView(View):
 
   
 
-
+@method_decorator([signin_required,never_cache],name="dispatch")
 class ExpenseUpdataView(View):
 
     def get(self,request,*args,**kwargs):
@@ -110,7 +128,7 @@ class ExpenseUpdataView(View):
              return render(request,"expense_update.html",{"form":form_instance}) 
         
 
-
+@method_decorator([signin_required,never_cache],name="dispatch")
 class ExpenseDeleteView(View):
 
     def get(self,request,*args,**kwrags):
@@ -123,12 +141,12 @@ class ExpenseDeleteView(View):
     
 
 
-    
+@method_decorator([signin_required,never_cache],name="dispatch") 
 class ExpenseSummaryView(View):
 
     def get(self,request,*args,**kwrags):
 
-        qs=Expense.objects.all()
+        qs=Expense.objects.filter(user=request.user)
 
         total_expense_count=qs.count()
 
@@ -199,8 +217,7 @@ class SignInView(View):
             return render(request,"sign_in.html",{"form":form_instance})
         
 
-
-
+@method_decorator([signin_required,never_cache],name="dispatch")
 class SignOutView(View):
     def get(self,request,*args,**kwargs):
 

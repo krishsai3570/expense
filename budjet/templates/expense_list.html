@@ -7,14 +7,19 @@
 <div class="container text-center p-5 ">
     <div class="w-25  mx-auto ">
         <h1>welcome user {{request.user}}</h1>
-        <form action="" >
+        <form action="">
             <select name="category" class="form-select text-bg-secondary" onchange="this.form.submit()">
-                <option value="all">all</option>
-                <option value="food">food</option>
-                <option value="travel">travel</option>
-                <option value="health">health</option>
-                <option value="other">other</option>
+                <option value="all" {%if selected == "all" %} selected {%endif%}>all</option>
+                <option value="food" {%if selected == "food" %} selected {%endif%}>food</option>
+                <option value="travel" {%if selected == "travel" %} selected {%endif%}>travel</option>
+                <option value="health" {%if selected == "health" %} selected {%endif%}>health</option>
+                <option value="other" {%if selected == "other" %} selected {%endif%}>other</option>
             </select>
+        </form>
+        <form action="{%url 'expense-list'%}">
+            <input type="text" placeholder="enter the key word" name="search_text">
+            <button type="submit">search</button>
+
         </form>
     </div>
 </div>
@@ -42,9 +47,9 @@
 
             <a href="{%url 'expense-delete' e.id %}">remove</a>
 
-           
 
-            
+
+
 
 
         </div>
