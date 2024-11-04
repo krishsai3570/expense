@@ -6,6 +6,15 @@
 <div class="container text-center mt-5">
   <div class="col-6">
     <h1>TOTAL TASK : {{total_expense_count}}</h1>
+
+<div>
+  {%for cs in category_summary%}
+
+ <h3> {{cs.category}}:{{cs.cat_count}}<br></h3>
+
+  {%endfor%}
+
+</div>
   </div>
 </div>
 

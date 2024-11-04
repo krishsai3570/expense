@@ -29,7 +29,10 @@ urlpatterns = [
     path("",views.ExpenseSummaryView.as_view(),name="expense-summary"),
     path("register/",views.SignUpView.as_view(),name="sign-up"),
     path("login/",views.SignInView.as_view(),name="sign-in"),
-    path("logout/",views.SignOutView.as_view(),name="sign-out")
+    path("logout/",views.SignOutView.as_view(),name="sign-out"),
+     path("dashboard/",views.DashBoardView.as_view())
+
+    
 
 
 ]

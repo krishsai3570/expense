@@ -4,11 +4,13 @@
 
 {%block main_block%}
 
+<a href="{%url 'expense-summary' %}" class="btn btn-outline-success mt-3">DASHBOARD</a>
 <div class="container text-center p-5 ">
     <div class="w-25  mx-auto ">
-        <h1>welcome user {{request.user}}</h1>
+
+        <h1 class="mb-5">welcome user {{request.user}}</h1>
         <form action="">
-            <select name="category" class="form-select text-bg-secondary" onchange="this.form.submit()">
+            <select name="category" class="form-select text-bg-dark btn-outline-success mb-3" onchange="this.form.submit()">
                 <option value="all" {%if selected == "all" %} selected {%endif%}>all</option>
                 <option value="food" {%if selected == "food" %} selected {%endif%}>food</option>
                 <option value="travel" {%if selected == "travel" %} selected {%endif%}>travel</option>
